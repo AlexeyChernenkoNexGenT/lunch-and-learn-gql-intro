@@ -1,8 +1,12 @@
 const path = require('path');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   entry: './api/type-gql/index.ts',
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
+  target: 'node',
+  mode: 'development',
+  externals: [nodeExternals()],
   module: {
     rules: [
       {
