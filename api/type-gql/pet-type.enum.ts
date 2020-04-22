@@ -1,8 +1,8 @@
 import { registerEnumType } from 'type-graphql';
 
 export enum PetType {
-  cat = 'CAT',
-  dog = 'DOG',
+  CAT = 'CAT',
+  DOG = 'DOG',
 }
 
 registerEnumType(PetType, {
