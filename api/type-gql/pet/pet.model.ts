@@ -1,5 +1,5 @@
 import { Field, ID, Int, ObjectType } from 'type-graphql';
-import User from './user.model';
+import User from '../user/user.model';
 import { PetType } from './pet-type.enum';
 
 @ObjectType()

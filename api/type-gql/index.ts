@@ -2,8 +2,8 @@ import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import { ApolloServer } from 'apollo-server';
 import { models, db } from '../src/db';
-import PetResolver from './pet.resolver';
-import UserResolver from './user.resolver';
+import PetResolver from './pet/pet.resolver';
+import UserResolver from './user/user.resolver';
 
 async function bootstrap() {
   const schema = await buildSchema({

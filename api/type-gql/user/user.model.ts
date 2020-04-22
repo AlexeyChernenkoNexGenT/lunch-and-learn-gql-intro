@@ -1,5 +1,5 @@
 import { Field, ObjectType, ID } from 'type-graphql';
-import Pet from './pet.model';
+import Pet from '../pet/pet.model';
 
 @ObjectType()
 export default class User {

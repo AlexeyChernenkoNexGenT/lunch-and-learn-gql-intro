@@ -1,9 +1,9 @@
 import { Ctx, Arg, Mutation, Query, Resolver, FieldResolver, Root } from 'type-graphql';
 import Pet from './pet.model';
-import User from './user.model';
+import User from '../user/user.model';
 import NewPetInput from './new-pet.input';
 import PetsInput from './pets.input';
-import { Context } from './context.model';
+import { Context } from '../context.model';
 
 @Resolver((of) => Pet)
 export default class PetResolver {

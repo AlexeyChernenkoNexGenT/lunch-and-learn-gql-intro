@@ -1,5 +1,5 @@
-import User from './user.model';
-import Pet from './pet.model';
+import User from './user/user.model';
+import Pet from './pet/pet.model';
 
 export type Context = {
   user: User;
