@@ -3,16 +3,17 @@ import Pet from './pet.model';
 import User from './user.model';
 import NewPetInput from './new-pet.input';
 import PetsInput from './pets.input';
+import { Context } from './context.model';
 
 @Resolver((of) => Pet)
 export default class PetResolver {
   @Query((returns) => Pet)
-  pet(@Arg('name') name: string, @Ctx() ctx: any): Pet {
+  pet(@Arg('name') name: string, @Ctx() ctx: Context): Pet {
     return ctx.models.Pet.findOne({ name });
   }
 
   @Query((returns) => [Pet])
-  pets(@Arg('input', { nullable: true }) input: PetsInput | null, @Ctx() ctx: any): Pet[] {
+  pets(@Arg('input', { nullable: true }) input: PetsInput | null, @Ctx() ctx: Context): Pet[] {
     const params: any = { user: ctx.user.id };
     if (input) {
       params.type = input?.type;
@@ -21,7 +22,7 @@ export default class PetResolver {
   }
 
   @Mutation((returns) => Pet)
-  addPet(@Arg('input') input: NewPetInput, @Ctx() ctx: any): Pet {
+  addPet(@Arg('input') input: NewPetInput, @Ctx() ctx: Context): Pet {
     const pet = ctx.models.Pet.create({ ...input, user: ctx.user.id });
     return pet;
   }
