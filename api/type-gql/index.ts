@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { buildSchema } from 'type-graphql';
+import { buildSchema, ArgumentValidationError } from 'type-graphql';
 import { ApolloServer } from 'apollo-server';
 import { models, db } from '../src/db';
 import PetResolver from './pet/pet.resolver';
@@ -16,6 +16,20 @@ async function bootstrap() {
       user: db.get('user').value(),
       models,
     }),
+    formatError: (err) => {
+      if (err?.originalError instanceof ArgumentValidationError) {
+        return {
+          code: 400,
+          message: err.originalError.message,
+          errors: err.originalError.validationErrors.map((ve) => ({
+            property: ve.property,
+            constraints: ve.constraints,
+          })),
+        };
+      }
+
+      return err;
+    },
   });
 
   server.listen().then(({ url }) => {
@@ -23,4 +37,4 @@ async function bootstrap() {
   });
 }
 
-bootstrap().catch(err => console.error(err));
+bootstrap().catch((err) => console.error(err));
