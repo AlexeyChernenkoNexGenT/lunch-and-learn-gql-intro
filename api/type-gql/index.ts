@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { buildSchema, ArgumentValidationError } from 'type-graphql';
+import { buildSchema, ArgumentValidationError, UnauthorizedError } from 'type-graphql';
 import { ApolloServer } from 'apollo-server';
 import { models, db } from '../src/db';
 import PetResolver from './pet/pet.resolver';
@@ -8,11 +8,14 @@ import UserResolver from './user/user.resolver';
 async function bootstrap() {
   const schema = await buildSchema({
     resolvers: [PetResolver, UserResolver],
+    authChecker: ({ root, args, context, info }, roles) =>
+      context?.req?.headers?.authorization === 'token',
   });
 
   const server = new ApolloServer({
     schema,
-    context: () => ({
+    context: ({ req }) => ({
+      req,
       user: db.get('user').value(),
       models,
     }),
@@ -25,6 +28,13 @@ async function bootstrap() {
             property: ve.property,
             constraints: ve.constraints,
           })),
+        };
+      }
+
+      if (err?.originalError instanceof UnauthorizedError) {
+        return {
+          code: 401,
+          message: err.originalError.message,
         };
       }
 

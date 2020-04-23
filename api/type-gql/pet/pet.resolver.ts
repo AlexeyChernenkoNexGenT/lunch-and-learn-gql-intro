@@ -1,4 +1,4 @@
-import { Ctx, Arg, Mutation, Query, Resolver, FieldResolver, Root } from 'type-graphql';
+import { Ctx, Arg, Mutation, Query, Resolver, FieldResolver, Root, Authorized } from 'type-graphql';
 import Pet from './pet.model';
 import User from '../user/user.model';
 import NewPetInput from './new-pet.input';
@@ -12,6 +12,7 @@ export default class PetResolver {
     return ctx.models.Pet.findOne({ name });
   }
 
+  @Authorized()
   @Query((returns) => [Pet])
   pets(@Arg('input', { nullable: true }) input: PetsInput | null, @Ctx() ctx: Context): Pet[] {
     const params: any = { user: ctx.user.id };
@@ -27,6 +28,7 @@ export default class PetResolver {
     return pet;
   }
 
+  @Authorized()
   @FieldResolver()
   owner(@Root() pet, @Ctx() ctx: any): User {
     return ctx.models.User.findOne({ id: pet.user });
