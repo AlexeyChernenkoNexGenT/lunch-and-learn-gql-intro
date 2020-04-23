@@ -12,6 +12,10 @@ module.exports = {
   },
   Mutation: {
     addPet(_, { input }, { models, user }) {
+      if (input.name.length > 30) {
+        throw new Error('name must be shorter than or equal to 30 characters');
+      }
+
       const pet = models.Pet.create({ ...input, user: user.id });
       return pet;
     },
