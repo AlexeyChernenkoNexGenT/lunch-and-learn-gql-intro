@@ -15,7 +15,9 @@ module.exports = {
     addPet(_, { input }, { models, authorize }) {
       const user = authorize();
       if (input.name.length > 30) {
-        throw new Error('name must be shorter than or equal to 30 characters');
+        const error = new Error('name must be shorter than or equal to 30 characters');
+        error.code = 400;
+        throw error;
       }
 
       const pet = models.Pet.create({ ...input, user: user.id });

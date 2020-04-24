@@ -10,6 +10,16 @@ const server = new ApolloServer({
   context({ req }) {
     return { models, db, authorize: createAuthorizeFunc(req.headers.authorization) };
   },
+  formatError: (err) => {
+    if (err.originalError) {
+      return {
+        code: err.originalError.code,
+        message: err.originalError.message,
+      }
+    }
+
+    return err;
+  },
 });
 
 server.listen().then(({ url }) => {
