@@ -1,6 +1,7 @@
 module.exports = {
   Query: {
-    pets(_, { input }, { models }) {
+    pets(_, { input }, { models, authorize }) {
+      authorize();
       return models.Pet.findMany(input || {});
     },
     pet(_, { id }, { models }) {
@@ -11,7 +12,8 @@ module.exports = {
     },
   },
   Mutation: {
-    addPet(_, { input }, { models, user }) {
+    addPet(_, { input }, { models, authorize }) {
+      const user = authorize();
       if (input.name.length > 30) {
         throw new Error('name must be shorter than or equal to 30 characters');
       }
