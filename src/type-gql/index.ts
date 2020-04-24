@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { buildSchema, ArgumentValidationError, UnauthorizedError } from 'type-graphql';
 import { ApolloServer } from 'apollo-server';
-import { models, db } from '../src/db';
+import { models, db } from '../db';
 import PetResolver from './pet/pet.resolver';
 import UserResolver from './user/user.resolver';
 

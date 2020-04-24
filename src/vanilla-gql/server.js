@@ -2,7 +2,7 @@ const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 const createAuthorizeFunc = require('./auth');
-const { models, db } = require('./db');
+const { models, db } = require('../db');
 
 const server = new ApolloServer({
   typeDefs,
